@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  claude-express-api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+      - PORT=3000
+    volumes:
+      - claude-config:/root/.config/claude
+      - app-data:/app/.claude-first-run-complete
+      - logs:/var/log
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  claude-config:
+    driver: local
+  app-data:
+    driver: local
+  logs:
+    driver: local

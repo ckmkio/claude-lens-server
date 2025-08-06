@@ -1,0 +1,10 @@
+# Claude Code scheduled execution
+# Run every hour
+0 * * * * /app/scripts/setup-claude.sh execute "help" >> /var/log/cron.log 2>&1
+
+# Run daily health check at 2 AM
+0 2 * * * /app/scripts/setup-claude.sh execute "--version" >> /var/log/cron.log 2>&1
+
+# Example: Run custom Claude command every 6 hours
+# Uncomment and modify as needed:
+# 0 */6 * * * /app/scripts/setup-claude.sh execute "your-command-here" >> /var/log/cron.log 2>&1
